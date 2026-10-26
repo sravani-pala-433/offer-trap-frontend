@@ -13,7 +13,7 @@ export default function HomePage() {
     <LetterfallHero/>
     <section className="ticker" aria-label="Platform principles"><span>LOOK CLOSER</span><i/> <span>VERIFY THE SOURCE</span><i/> <span>SHARE WHAT YOU LEARN</span><i/> <span>LOOK CLOSER</span></section>
     <section className="section archive-section" id="reports">
-      <div className="section-heading"><div><p className="eyebrow">The community archive</p><h2>Has someone seen<br/><em>this before?</em></h2></div><p className="section-intro">Explore reports from job seekers. Find patterns, compare details, and make a more informed decision before you respond.</p></div>
+      <div className="section-heading"><div><p className="eyebrow">The community archive</p><h2>Has someone seen<br/><em>this before?</em></h2></div><p className="section-intro">Search reports for similar offers, recruiter details, and warning signs.</p></div>
       {demoMode && <p className="demo-notice">Demo mode. Sample reports are illustrative, not verified allegations.</p>}
       {error && <p className="inline-error">{error}</p>}
       <div className="report-list">{reports.map(r=><ReportCard key={r.id} report={r}/>)}</div>

@@ -20,7 +20,7 @@ export default function ReportsPage() {
   useEffect(()=>{ const q=params.get('q')??'';setQuery(q);void runSearch(q) },[params])
   function submit(e:FormEvent){e.preventDefault();setParams(query.trim()?{q:query.trim()}:{})}
   return <main className="inner-page">
-    <div className="inner-intro"><p className="eyebrow">The evidence archive</p><h1>Explore the <em>reports.</em></h1><p>Search community-submitted recruitment incidents. A match is a reason to investigate further, not proof of wrongdoing.</p></div>
+    <div className="inner-intro"><p className="eyebrow">The evidence archive</p><h1>Explore the <em>reports.</em></h1><p>Search reported incidents and compare details. A match is a signal, not proof.</p></div>
     {demoMode && <p className="demo-notice">Demo mode. These are illustrative sample reports.</p>}
     <form className="search-box archive-search" onSubmit={submit}><Search size={18}/><label className="sr-only" htmlFor="archive-query">Search reports</label><input id="archive-query" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Company, recruiter email, phone number…"/><button type="submit">Search</button></form>
     <div className="results-bar"><span><SlidersHorizontal size={15}/> {loading?'Searching…':`${total} ${total===1?'report':'reports'} found`}</span><Link to="/submit">Submit a report ↗</Link></div>

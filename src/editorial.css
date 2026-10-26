@@ -1564,6 +1564,7 @@ body {
   :root[data-theme='dark'] .report-company strong,
   :root[data-theme='dark'] .report-main h3,
   :root[data-theme='dark'] .report-main h3 a,
+  :root[data-theme='dark'] .identifier strong,
   :root[data-theme='dark'] .detail-main h1,
   :root[data-theme='dark'] .detail-meta strong {
     color: var(--text) !important;
@@ -1952,6 +1953,12 @@ body {
   color: var(--ink);
 }
 
+.site-header > .wordmark {
+  flex: 0 0 auto;
+  font-size: 25px;
+  line-height: 1;
+}
+
 .site-header > .theme-toggle:hover {
   border-color: var(--red);
   color: var(--red);
@@ -1981,7 +1988,160 @@ body {
 }
 
 @media (max-width: 720px) {
+  .report-row {
+    grid-template-columns: 34px minmax(0, 1fr) 24px;
+    gap: 10px;
+    padding: 18px 0;
+  }
+
+  .report-index span {
+    font-size: 6px;
+    letter-spacing: .5px;
+  }
+
+  .report-index strong {
+    margin-top: 5px;
+    font-size: 17px;
+  }
+
+  .report-meta {
+    gap: 5px 8px;
+    margin-bottom: 8px;
+    font-size: 8px;
+  }
+
+  .category-label {
+    font-size: 7px;
+    letter-spacing: .6px;
+  }
+
+  .demo-label {
+    min-height: 18px;
+    padding: 2px 5px;
+    font-size: 7px;
+  }
+
+  .report-company {
+    gap: 5px;
+    margin-bottom: 4px !important;
+    font-size: 10px !important;
+  }
+
+  .report-company > span {
+    font-size: 7px;
+  }
+
+  .report-main h3 {
+    margin-bottom: 5px;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.35;
+  }
+
+  .report-main > p:not(.report-company) {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .report-footer {
+    gap: 7px 10px;
+    margin-top: 9px;
+  }
+
+  .status-label {
+    min-height: 21px;
+    padding: 3px 6px;
+    font-size: 7px;
+  }
+
+  .identifier,
+  .related-count {
+    font-size: 9px;
+  }
+
+  .identifier > span {
+    display: none;
+  }
+
+  .site-header {
+    height: 64px;
+    min-height: 64px;
+    padding-inline: 18px;
+  }
+
+  .site-header > .wordmark {
+    font-size: 17px;
+  }
+
   .site-header > .theme-toggle {
     margin-left: auto;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    flex-basis: 36px;
+  }
+
+  .site-header > .mobile-menu {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .hero {
+    padding: 26px 20px 24px;
+  }
+
+  .hero .eyebrow {
+    margin-bottom: 14px;
+    font-size: 8px;
+    letter-spacing: .15em;
+  }
+
+  .hero h1 {
+    max-width: 16ch;
+    font-size: clamp(27px, 7.5vw, 30px);
+    line-height: 1.05;
+  }
+
+  .hero-description {
+    max-width: 38ch;
+    margin: 14px 0 16px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .hero-actions .button {
+    width: auto;
+    min-height: 40px;
+    flex: 1 1 135px;
+    padding: 10px 11px;
+    font-size: 10px;
+  }
+
+  .hero-search {
+    min-height: 48px;
+    margin-top: 16px;
+  }
+
+  .hero-note {
+    margin-top: 10px;
+    font-size: 9px;
+  }
+
+  .hero-art {
+    height: clamp(250px, 68vw, 315px);
+    margin-top: 8px;
+  }
+
+  .hero-description {
+    max-width: 36ch;
+    font-size: 13px;
+    line-height: 1.6;
   }
 }

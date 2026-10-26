@@ -31,7 +31,7 @@ export default function LetterfallHero() {
     <div className="hero-copy">
       <motion.p className="eyebrow" initial={reduced ? false : { opacity:0, y:10 }} animate={{ opacity:1, y:0 }} transition={{ duration:.5 }}>A second look can change everything</motion.p>
       <motion.h1 initial={reduced ? false : { opacity:0, y:22 }} animate={{ opacity:1, y:0 }} transition={{ duration:.7, delay:.1 }}>Your next job offer deserves a <em>second look.</em></motion.h1>
-      <motion.p className="hero-description" initial={reduced ? false : { opacity:0, y:14 }} animate={{ opacity:1, y:0 }} transition={{ duration:.6, delay:.2 }}>OfferTrap is a community archive for suspicious job offers and recruiter reports. Search for names and contact details, compare warning signs, or submit your experience to help others. Reports are not proof, so always verify offers through official company channels.</motion.p>
+      <motion.p className="hero-description" initial={reduced ? false : { opacity:0, y:14 }} animate={{ opacity:1, y:0 }} transition={{ duration:.6, delay:.2 }}>Search reports about suspicious job offers, check for warning signs, and share your experience. Reports are not proof, so verify offers directly with the company.</motion.p>
       <motion.div className="hero-actions" initial={reduced ? false : { opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ duration:.5, delay:.3 }}>
         <a className="button button-primary" href="#offer-search">Check a job offer <ArrowUpRight size={16}/></a>
         <a className="button button-quiet" href="/submit">Report a suspicious offer</a>
