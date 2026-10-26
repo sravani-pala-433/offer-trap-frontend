@@ -1988,6 +1988,35 @@ body {
 }
 
 @media (max-width: 720px) {
+  :root .hero h1,
+  :root .section-heading h2,
+  :root .story-side h2,
+  :root .safety-section h2,
+  :root .inner-intro h1,
+  :root .submit-intro h1,
+  :root .success-page h1,
+  :root .detail-main h1 {
+    font-size: clamp(27px, 7.5vw, 30px);
+    line-height: 1.08;
+    letter-spacing: -.035em;
+  }
+
+  :root .step h3,
+  :root .report-main h3 {
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  :root .report-company strong {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  :root .site-footer .wordmark {
+    font-size: 20px;
+  }
+
   .report-row {
     grid-template-columns: 34px minmax(0, 1fr) 24px;
     gap: 10px;
