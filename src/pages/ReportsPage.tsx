@@ -55,6 +55,7 @@ export default function ReportsPage() {
   const totalPages = Math.max(1,Math.ceil(total/PAGE_SIZE))
   const pageWindowStart = Math.max(1,Math.min(page-2,Math.max(1,totalPages-4)))
   const visiblePages = Array.from({length:Math.min(5,totalPages)},(_,index)=>pageWindowStart+index)
+  const activeSearch = params.get('q')?.trim() ?? ''
 
   return <main className="inner-page">
     <div className="inner-intro"><p className="eyebrow">The evidence archive</p><h1>Explore the <em>reports.</em></h1><p>Approved reports include reviewed details. Other submissions remain visible with their review status while recruiter identities, contact details, evidence, and raw descriptions stay protected.</p></div>
@@ -69,6 +70,13 @@ export default function ReportsPage() {
         <div className="pagination-pages">{visiblePages.map(pageNumber=><button type="button" key={pageNumber} className={page===pageNumber?'active':''} aria-current={page===pageNumber?'page':undefined} aria-label={`Go to page ${pageNumber}`} onClick={()=>changePage(pageNumber)}>{pageNumber}</button>)}</div>
         <button type="button" onClick={()=>changePage(page+1)} disabled={page>=totalPages}>Next <ChevronRight size={16}/></button>
       </nav>}
-    </> : !error ? <div className="empty-state"><span>NO MATCHING REPORTS</span><h2>Nothing in the archive yet.</h2><p>This does not mean the offer is legitimate. Verify it directly with the company through an official channel.</p><Link className="button button-primary" to="/submit">Report your experience</Link></div> : null}
+    </> : !error ? <div className="empty-state">
+      <span>NO REPORTS FOUND</span>
+      <h2>No reports found.</h2>
+      <p>{activeSearch
+        ? `No reports match “${activeSearch}”. If you experienced a suspicious offer, submit a report to help others.`
+        : 'There are no community reports in the archive yet. If you experienced a suspicious offer, submit a report to help others.'}</p>
+      <Link className="button button-primary" to="/submit">Submit a report</Link>
+    </div> : null}
   </main>
 }

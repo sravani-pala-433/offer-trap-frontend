@@ -47,3 +47,249 @@
   border-color: var(--red) !important;
   box-shadow: 0 0 0 3px rgba(164, 61, 70, .09);
 }
+
+/* Improve legibility of the primary header navigation. */
+.nav-links {
+  font-size: 15px;
+}
+
+.nav-links .nav-report {
+  font-size: 14px;
+}
+
+/* Keep the most important page headings crisp and legible in either theme. */
+.hero h1,
+.section-heading h2,
+.story-side h2,
+.safety-section h2,
+.trust-heading h2,
+.inner-intro h1,
+.submit-intro h1,
+.detail-main h1,
+.success-page h1,
+.status-card h1 {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+:root[data-theme='dark'] .hero h1,
+:root[data-theme='dark'] .section-heading h2,
+:root[data-theme='dark'] .story-side h2,
+:root[data-theme='dark'] .safety-section h2,
+:root[data-theme='dark'] .trust-heading h2,
+:root[data-theme='dark'] .inner-intro h1,
+:root[data-theme='dark'] .submit-intro h1,
+:root[data-theme='dark'] .detail-main h1,
+:root[data-theme='dark'] .success-page h1,
+:root[data-theme='dark'] .status-card h1 {
+  color: var(--text);
+  text-shadow: 0 0 28px rgba(215, 127, 134, .1);
+}
+
+:root[data-theme='dark'] .hero h1 em,
+:root[data-theme='dark'] .section-heading h2 em,
+:root[data-theme='dark'] .story-side h2 em,
+:root[data-theme='dark'] .safety-section h2 em,
+:root[data-theme='dark'] .trust-heading h2 em,
+:root[data-theme='dark'] .inner-intro h1 em,
+:root[data-theme='dark'] .submit-intro h1 em,
+:root[data-theme='dark'] .success-page h1 em {
+  color: #e98b94;
+}
+
+/* Make an empty archive feel like a useful next step, not a dead end. */
+.empty-state {
+  max-width: 760px;
+  padding: clamp(34px, 5vw, 52px) 24px;
+  border-style: solid;
+}
+
+.empty-state h2 {
+  color: var(--ink);
+  font-size: clamp(30px, 4vw, 42px);
+  line-height: 1.12;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+:root[data-theme='dark'] .empty-state {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+:root[data-theme='dark'] .empty-state h2 {
+  color: var(--text);
+}
+
+:root[data-theme='dark'] .empty-state p {
+  color: var(--text-muted);
+}
+
+/* The detail callout used a light surface with inherited light-mode text in dark mode. */
+.fairness-note {
+  border-left: 3px solid var(--red);
+  background: #f0e9df;
+  color: #302c27;
+}
+
+.fairness-note strong {
+  color: #292621;
+  font-size: 14px;
+}
+
+.fairness-note p {
+  color: #514b43;
+  font-size: 13px;
+}
+
+:root[data-theme='dark'] .fairness-note {
+  border-color: #d77f86;
+  background: var(--surface-raised);
+  color: var(--text);
+}
+
+:root[data-theme='dark'] .fairness-note strong {
+  color: var(--text);
+}
+
+:root[data-theme='dark'] .fairness-note p {
+  color: var(--text-muted);
+}
+
+/* Bring report and job metadata up to a comfortable reading size. */
+.detail-meta {
+  row-gap: 18px;
+  font-size: 14px;
+}
+
+.detail-meta span {
+  font-size: 10px;
+  color: #746d63;
+}
+
+.detail-meta strong {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.detail-page .detail-main h1 {
+  font-size: clamp(30px, 3vw, 36px) !important;
+}
+
+.submission-form > label,
+.form-two > label {
+  font-size: 13px;
+}
+
+.submission-form input:not([type='checkbox']),
+.submission-form textarea,
+.submission-form select {
+  font-size: 14px;
+}
+
+/* Keep the post-submit status card compact while making its details easier to scan. */
+.status-page {
+  max-width: 880px;
+  padding-top: 54px;
+  padding-bottom: 78px;
+}
+
+.status-card {
+  max-width: 650px;
+  margin-top: 28px;
+  padding: clamp(25px, 4vw, 40px);
+}
+
+.status-orb {
+  margin-bottom: 20px;
+}
+
+.status-card > .eyebrow {
+  margin-bottom: 12px;
+}
+
+.status-card h1 {
+  font-size: clamp(38px, 5vw, 54px);
+  line-height: 1.08;
+}
+
+.status-explanation {
+  margin: 16px 0 22px;
+  font-size: 14px;
+}
+
+.status-details > div {
+  grid-template-columns: 135px minmax(0, 1fr);
+  gap: 16px;
+  padding: 12px 0;
+}
+
+.status-details dt {
+  color: #746d63;
+  font-size: 10px;
+}
+
+:root[data-theme='dark'] .detail-meta span,
+:root[data-theme='dark'] .status-details dt {
+  color: var(--text-muted);
+}
+
+.status-details dd {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+  .detail-page .detail-main h1 {
+    font-size: clamp(25px, 6vw, 29px) !important;
+  }
+
+  .empty-state {
+    margin: 24px 0;
+    padding: 34px 18px;
+  }
+
+  .detail-meta {
+    grid-template-columns: 95px minmax(0, 1fr);
+  }
+
+  .detail-meta strong {
+    font-size: 14px;
+  }
+
+  .submission-form > label,
+  .form-two > label {
+    font-size: 13px;
+  }
+
+  .submission-form input:not([type='checkbox']),
+  .submission-form textarea,
+  .submission-form select {
+    font-size: 16px;
+  }
+
+  .status-page {
+    padding-top: 38px;
+    padding-bottom: 58px;
+  }
+
+  .status-card {
+    margin-top: 24px;
+    padding: 24px 18px;
+  }
+
+  .status-card h1 {
+    font-size: 38px;
+  }
+
+  .status-details > div {
+    grid-template-columns: 100px minmax(0, 1fr);
+    gap: 10px;
+  }
+}
