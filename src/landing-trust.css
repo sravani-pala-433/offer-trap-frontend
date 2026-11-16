@@ -1,0 +1,138 @@
+.landing-trust {
+  padding: 90px clamp(22px, 8vw, 125px);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 86% 10%, rgba(164, 61, 70, .08), transparent 25rem),
+    var(--paper);
+}
+
+.trust-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  align-items: end;
+  max-width: 1180px;
+  margin: 0 auto 45px;
+}
+
+.trust-heading h2 {
+  margin: 0;
+  font: 400 clamp(34px, 3.1vw, 42px)/1.08 var(--serif);
+  letter-spacing: -.04em;
+}
+
+.trust-heading h2 em {
+  color: var(--red);
+  font-weight: 400;
+}
+
+.trust-heading > p {
+  max-width: 430px;
+  margin: 0 0 5px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 1180px;
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.trust-grid article {
+  min-height: 255px;
+  padding: 28px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 254, 250, .72);
+}
+
+.trust-grid article > span {
+  display: grid;
+  width: 45px;
+  height: 45px;
+  margin-bottom: 30px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(164, 61, 70, .09);
+  color: var(--red);
+}
+
+.trust-grid small {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--red);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+}
+
+.trust-grid h3 {
+  margin: 0 0 12px;
+  font: 400 20px/1.25 var(--serif);
+}
+
+.trust-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+:root[data-theme='dark'] .landing-trust {
+  border-color: var(--border);
+  background:
+    radial-gradient(circle at 86% 10%, rgba(215, 127, 134, .07), transparent 25rem),
+    var(--surface);
+}
+
+:root[data-theme='dark'] .trust-grid {
+  border-color: var(--border);
+}
+
+:root[data-theme='dark'] .trust-grid article {
+  border-color: var(--border);
+  background: rgba(255, 255, 255, .018);
+}
+
+@media (max-width: 850px) {
+  .trust-heading {
+    display: grid;
+    gap: 22px;
+  }
+
+  .trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-grid article {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .landing-trust {
+    padding: 68px 22px;
+  }
+
+  .trust-heading h2 {
+    font-size: clamp(27px, 7.5vw, 30px);
+  }
+
+  .trust-heading > p {
+    font-size: 13px;
+  }
+
+  .trust-grid article {
+    padding: 23px 20px;
+  }
+
+  .trust-grid h3 {
+    font-size: 19px;
+  }
+}

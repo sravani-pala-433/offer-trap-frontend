@@ -10,19 +10,15 @@ A React + TypeScript frontend starter for a recruitment-scam awareness platform.
 5. Create a production build with `npm run build`.
 
 ## Connect your FastAPI backend
-Edit `src/lib/api.ts`. The current adapter uses these example endpoints:
-- `GET /reports?query=&page=&page_size=` — report search/list
-- `GET /reports/:id` — report details
-- `POST /reports` — multipart form submission, including optional `evidence` files
-
-These are illustrative contracts, not assumptions about your existing API. Change the paths, query names, field names, response normalization, and auth headers in `api.ts` to match your backend. Keep `VITE_API_BASE_URL` pointed at your API prefix (e.g. `http://localhost:8000/api`).
-
-The adapter sends `FormData` for report submission. Do not manually set the multipart `Content-Type` header; the browser supplies the boundary. If your backend uses a presigned S3 upload flow, replace the file part of `submitReport` with your presign → direct upload → metadata submission sequence.
+Copy `.env.example` to `.env` and keep `VITE_API_BASE_URL` pointed at the API v1 prefix, for example `http://localhost:8000/api/v1`.
 
 If your API uses bearer authentication, add the token retrieval/header logic inside `request()` in `src/lib/api.ts`; do not hardcode secrets in frontend environment variables. Anything prefixed `VITE_` is exposed to the browser.
 
-## Demo mode
-`VITE_DEMO_MODE=true` enables clearly labelled sample reports when API calls fail or when the API base URL is empty. Set it to `false` to avoid fallback data. Demo data is illustrative and must not be presented as verified allegations.
+## Temporary admin login
+`VITE_ADMIN_LOGIN_MOCK=true` allows any username with at least 3 characters and password with at least 6 characters while backend authentication is being built. It mocks login only; the dashboard list, evidence downloads, and moderation actions always call the configured backend API.
+
+## Illustrative report preview
+`VITE_SHOW_SAMPLE_REPORT=true` shows one clearly labelled illustrative report only when the reports API is unavailable. The sample is stored in `src/data/sampleReport.ts`. Set the flag to `false`, or delete that file and its import in `src/lib/api.ts`, after real report data is connected.
 
 ## Security checklist before launch
 - Validate uploaded content and size on the server, not only in the browser.

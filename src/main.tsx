@@ -4,6 +4,11 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './styles.css'
 import './editorial.css'
+import './admin.css'
+import './form-search.css'
+import './admin-search.css'
+import './landing-trust.css'
+import './font-alignment.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode><BrowserRouter><App /></BrowserRouter></React.StrictMode>,

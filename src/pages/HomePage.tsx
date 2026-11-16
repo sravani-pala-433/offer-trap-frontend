@@ -1,24 +1,44 @@
 import { useEffect, useState } from 'react'
-import { ArrowDownRight, ArrowUpRight, CheckCircle2, Search, ShieldCheck } from 'lucide-react'
+import { ArrowDownRight, ArrowUpRight, BadgeCheck, CheckCircle2, EyeOff, ListChecks, Search, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import LetterfallHero from '../components/LetterfallHero'
 import ReportCard from '../components/ReportCard'
-import { api, demoMode, type Report } from '../lib/api'
+import { api, type Report } from '../lib/api'
+import { sampleReport } from '../data/sampleReport'
 
 export default function HomePage() {
   const [reports,setReports] = useState<Report[]>([])
-  const [error,setError] = useState('')
-  useEffect(()=>{ api.searchReports('',1,3).then(r=>setReports(r.items.slice(0,3))).catch(e=>setError(e.message)) },[])
+  const [showingSample,setShowingSample] = useState(false)
+  useEffect(()=>{
+    api.searchReports('',1,1).then(result=>{
+      const report = result.items[0]
+      setReports([report ?? sampleReport])
+      setShowingSample(Boolean(result.isSample || !report || report.illustrative))
+    }).catch(()=>{
+      setReports([sampleReport])
+      setShowingSample(true)
+    })
+  },[])
   return <main>
     <LetterfallHero/>
     <section className="ticker" aria-label="Platform principles"><span>LOOK CLOSER</span><i/> <span>VERIFY THE SOURCE</span><i/> <span>SHARE WHAT YOU LEARN</span><i/> <span>LOOK CLOSER</span></section>
     <section className="section archive-section" id="reports">
-      <div className="section-heading"><div><p className="eyebrow">The community archive</p><h2>Has someone seen<br/><em>this before?</em></h2></div><p className="section-intro">Search reports for similar offers, recruiter details, and warning signs.</p></div>
-      {demoMode && <p className="demo-notice">Demo mode. Sample reports are illustrative, not verified allegations.</p>}
-      {error && <p className="inline-error">{error}</p>}
+      <div className="section-heading"><div><p className="eyebrow">The community archive</p><h2>Has someone seen<br/><em>this before?</em></h2></div><p className="section-intro">See every submission’s review status. Recruiter details appear only after a report is approved.</p></div>
+      {showingSample && <p className="demo-notice">Illustrative preview shown while published API data is unavailable. This is not a real allegation.</p>}
       <div className="report-list">{reports.map(r=><ReportCard key={r.id} report={r}/>)}</div>
-      {!reports.length && !error && <p className="empty-note">Loading community reports…</p>}
+      {!reports.length && <p className="empty-note">Loading community reports…</p>}
       <div className="section-bottom"><Link className="text-link" to="/reports">Explore all reports <ArrowUpRight size={16}/></Link><span className="quiet-meta">COMMUNITY-SUBMITTED · REVIEW STATUS SHOWN</span></div>
+    </section>
+    <section className="landing-trust" aria-labelledby="trust-heading">
+      <div className="trust-heading">
+        <div><p className="eyebrow">What you can trust here</p><h2 id="trust-heading">Transparency without<br/><em>exposure.</em></h2></div>
+        <p>OfferTrap shows that a submission exists while protecting the people and evidence behind it until review is complete.</p>
+      </div>
+      <div className="trust-grid">
+        <article><span><ListChecks size={22}/></span><small>01 · VISIBLE PROCESS</small><h3>Every report carries a status</h3><p>Submitted, under review, needs information, approved, or rejected—you can see where a report stands.</p></article>
+        <article><span><EyeOff size={22}/></span><small>02 · PRIVACY FIRST</small><h3>Sensitive details stay protected</h3><p>Contributor email, evidence, raw descriptions, and recruiter identifiers remain private until they are safe to publish.</p></article>
+        <article><span><BadgeCheck size={22}/></span><small>03 · REVIEWED CONTEXT</small><h3>Approval unlocks reviewed details</h3><p>Approved reports can show moderated summaries and relevant identifiers, always with a community-report disclaimer.</p></article>
+      </div>
     </section>
     <section className="story-section" id="how-it-works">
       <div className="story-side"><p className="eyebrow">A little doubt can be useful</p><h2>Pause the excitement.<br/><em>Check the details.</em></h2><p>A polished offer letter can still contain warning signs. Take a moment to examine the details and look for independent confirmation.</p><Link className="button button-dark" to="/reports">Start investigating <ArrowUpRight size={16}/></Link></div>

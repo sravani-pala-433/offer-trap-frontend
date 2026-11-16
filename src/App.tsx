@@ -6,6 +6,9 @@ import HomePage from './pages/HomePage'
 import ReportsPage from './pages/ReportsPage'
 import ReportDetailPage from './pages/ReportDetailPage'
 import SubmitReportPage from './pages/SubmitReportPage'
+import ReportStatusPage from './pages/ReportStatusPage'
+import AdminLoginPage from './pages/AdminLoginPage'
+import AdminDashboardPage from './pages/AdminDashboardPage'
 
 export default function App(){
   const [theme,setTheme]=useState<'light'|'dark'>(()=>document.documentElement.dataset.theme==='dark'?'dark':'light')
@@ -17,5 +20,5 @@ export default function App(){
     setTheme(next)
     try{window.localStorage.setItem('offertrap-theme-v2',next)}catch(error){console.error('Unable to save the OfferTrap theme preference.',error)}
   }
-  return <div className="app-shell"><a className="skip-link" href="#main-content">Skip to content</a><SiteHeader theme={theme} onToggleTheme={toggleTheme}/><div id="main-content"><Routes><Route path="/" element={<HomePage/>}/><Route path="/reports" element={<ReportsPage/>}/><Route path="/reports/:id" element={<ReportDetailPage/>}/><Route path="/submit" element={<SubmitReportPage/>}/><Route path="*" element={<main className="inner-page"><h1>Page not found.</h1><a href="/">Return home</a></main>}/></Routes></div><SiteFooter/></div>
+  return <div className="app-shell"><a className="skip-link" href="#main-content">Skip to content</a><SiteHeader theme={theme} onToggleTheme={toggleTheme}/><div id="main-content"><Routes><Route path="/" element={<HomePage/>}/><Route path="/reports" element={<ReportsPage/>}/><Route path="/reports/:id/status" element={<ReportStatusPage/>}/><Route path="/reports/:id" element={<ReportDetailPage/>}/><Route path="/submit" element={<SubmitReportPage/>}/><Route path="/admin/login" element={<AdminLoginPage/>}/><Route path="/admin" element={<AdminDashboardPage/>}/><Route path="*" element={<main className="inner-page"><h1>Page not found.</h1><a href="/">Return home</a></main>}/></Routes></div><SiteFooter/></div>
 }

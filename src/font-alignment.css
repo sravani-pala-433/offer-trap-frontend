@@ -1,0 +1,49 @@
+/* Keep all newly introduced workflows on OfferTrap's established type system. */
+.submit-page,
+.submission-form,
+.submission-steps,
+.report-pagination,
+.admin-login-page,
+.admin-page,
+.admin-search,
+.landing-trust {
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+}
+
+.submit-page button,
+.submit-page input,
+.submit-page textarea,
+.submit-page select,
+.admin-login-page button,
+.admin-login-page input,
+.admin-page button,
+.admin-page input,
+.admin-page textarea,
+.admin-page select {
+  font-family: inherit;
+}
+
+.submit-intro h1,
+.admin-login-copy h1,
+.admin-heading h1,
+.admin-report-grid h2,
+.trust-heading h2,
+.trust-grid h3,
+.admin-letter-seal b {
+  font-family: 'Literata', Georgia, serif;
+}
+
+.field-error {
+  display: block;
+  margin-top: 2px;
+  color: var(--red);
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.admin-login-form input[aria-invalid='true'] {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 3px rgba(164, 61, 70, .09);
+}
