@@ -161,11 +161,11 @@ export default function SubmitReportPage() {
       <div className="form-heading"><span>About you</span><p>Both fields are required.</p></div>
       <div className="form-two">
         <label>Your name *
-          <input required minLength={2} maxLength={120} autoComplete="name" name="submitterName" value={form.submitterName} onChange={field} onBlur={()=>touchField('submitterName')} aria-invalid={Boolean(touched.submitterName && validationErrors.submitterName)} aria-describedby="submitter-name-error" placeholder="Name shown with an approved report"/>
+          <input required minLength={2} maxLength={120} autoComplete="name" name="submitterName" value={form.submitterName} onChange={field} onBlur={()=>touchField('submitterName')} aria-invalid={Boolean(touched.submitterName && validationErrors.submitterName)} aria-describedby="submitter-name-error" placeholder="Your display name"/>
           {touched.submitterName && validationErrors.submitterName && <span className="field-error" id="submitter-name-error" role="alert">{validationErrors.submitterName}</span>}
         </label>
         <label>Your email *
-          <input required type="email" maxLength={320} autoComplete="email" name="submitterEmail" value={form.submitterEmail} onChange={field} onBlur={()=>touchField('submitterEmail')} aria-invalid={Boolean(touched.submitterEmail && validationErrors.submitterEmail)} aria-describedby="submitter-email-error" placeholder="Private - used for submission records"/>
+          <input required type="email" maxLength={320} autoComplete="email" name="submitterEmail" value={form.submitterEmail} onChange={field} onBlur={()=>touchField('submitterEmail')} aria-invalid={Boolean(touched.submitterEmail && validationErrors.submitterEmail)} aria-describedby="submitter-email-error" placeholder="Private email address"/>
           {touched.submitterEmail && validationErrors.submitterEmail && <span className="field-error" id="submitter-email-error" role="alert">{validationErrors.submitterEmail}</span>}
         </label>
       </div>
@@ -176,23 +176,23 @@ export default function SubmitReportPage() {
 
       <div className="form-heading incident-heading"><span>Incident details</span><p>Fields marked * are required.</p></div>
       <label>Company or organization *
-        <input required minLength={2} maxLength={200} name="companyName" value={form.companyName} onChange={field} onBlur={()=>touchField('companyName')} aria-invalid={Boolean(touched.companyName && validationErrors.companyName)} aria-describedby="company-name-error" placeholder="Name shown on the offer"/>
+        <input required minLength={2} maxLength={200} name="companyName" value={form.companyName} onChange={field} onBlur={()=>touchField('companyName')} aria-invalid={Boolean(touched.companyName && validationErrors.companyName)} aria-describedby="company-name-error" placeholder="Company name"/>
         {touched.companyName && validationErrors.companyName && <span className="field-error" id="company-name-error" role="alert">{validationErrors.companyName}</span>}
       </label>
       <label>Recruiter mobile number
-        <input type="tel" inputMode="numeric" pattern="[0-9]{10}" minLength={10} maxLength={10} autoComplete="off" name="recruiterContact" value={form.recruiterContact} onChange={field} onBlur={()=>touchField('recruiterContact')} aria-invalid={Boolean(touched.recruiterContact && validationErrors.recruiterContact)} aria-describedby="recruiter-mobile-error" placeholder="Optional - enter exactly 10 digits"/>
+        <input type="tel" inputMode="numeric" pattern="[0-9]{10}" minLength={10} maxLength={10} autoComplete="off" name="recruiterContact" value={form.recruiterContact} onChange={field} onBlur={()=>touchField('recruiterContact')} aria-invalid={Boolean(touched.recruiterContact && validationErrors.recruiterContact)} aria-describedby="recruiter-mobile-error" placeholder="Optional · 10 digits"/>
         {touched.recruiterContact && validationErrors.recruiterContact && <span className="field-error" id="recruiter-mobile-error" role="alert">{validationErrors.recruiterContact}</span>}
       </label>
       <div className="form-two">
-        <label>Job title<input maxLength={200} name="jobTitle" value={form.jobTitle} onChange={field} placeholder="e.g. Python Developer"/></label>
+        <label>Job title<input maxLength={200} name="jobTitle" value={form.jobTitle} onChange={field} placeholder="e.g. Software Developer"/></label>
         <label>Incident category<select name="category" value={form.category} onChange={field}><option>Advance-fee recruitment</option><option>Fake offer letter</option><option>Company impersonation</option><option>Suspicious interview process</option><option>Personal information request</option><option>Other</option></select></label>
       </div>
       <label>Job posting URL
-        <input name="jobUrl" type="url" maxLength={2048} value={form.jobUrl} onChange={field} onBlur={()=>touchField('jobUrl')} aria-invalid={Boolean(touched.jobUrl && validationErrors.jobUrl)} aria-describedby="job-url-error" placeholder="https://…"/>
+        <input name="jobUrl" type="url" maxLength={2048} value={form.jobUrl} onChange={field} onBlur={()=>touchField('jobUrl')} aria-invalid={Boolean(touched.jobUrl && validationErrors.jobUrl)} aria-describedby="job-url-error" placeholder="https://company.com/job"/>
         {touched.jobUrl && validationErrors.jobUrl && <span className="field-error" id="job-url-error" role="alert">{validationErrors.jobUrl}</span>}
       </label>
       <label>What happened? *
-        <textarea required minLength={20} maxLength={10000} rows={5} name="description" value={form.description} onChange={field} onBlur={()=>touchField('description')} aria-invalid={Boolean(touched.description && validationErrors.description)} aria-describedby="description-error" placeholder="Describe the sequence of events. Separate what you observed from what you suspect."/>
+        <textarea required minLength={20} maxLength={10000} rows={5} name="description" value={form.description} onChange={field} onBlur={()=>touchField('description')} aria-invalid={Boolean(touched.description && validationErrors.description)} aria-describedby="description-error" placeholder="Describe what happened and what you observed."/>
         {touched.description && validationErrors.description && <span className="field-error" id="description-error" role="alert">{validationErrors.description}</span>}
       </label>
       <label className="checkbox-label"><input type="checkbox" name="paymentRequested" checked={form.paymentRequested} onChange={field}/><span>They asked me to pay money or a fee during recruitment.</span></label>

@@ -103,7 +103,7 @@ export default function AdminDashboardPage() {
     <form className="admin-search" role="search" onSubmit={search}>
       <Search size={20}/>
       <label className="sr-only" htmlFor="admin-report-search">Search private submissions</label>
-      <input id="admin-report-search" value={searchInput} onChange={event=>setSearchInput(event.target.value)} placeholder="Search reference, company, contributor email, recruiter contact…"/>
+      <input id="admin-report-search" value={searchInput} onChange={event=>setSearchInput(event.target.value)} placeholder="Search company, email, or reference…"/>
       {searchInput && <button className="admin-search-clear" type="button" aria-label="Clear search" onClick={clearSearch}><X size={16}/></button>}
       <button className="admin-search-submit" type="submit">Search</button>
     </form>

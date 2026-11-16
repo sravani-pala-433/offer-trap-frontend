@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ArrowDownRight, ArrowUpRight, BadgeCheck, CheckCircle2, EyeOff, ListChecks, Search, ShieldCheck } from 'lucide-react'
+import { ArrowDownRight, ArrowUpRight, CheckCircle2, Search, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import LetterfallHero from '../components/LetterfallHero'
 import ReportCard from '../components/ReportCard'
@@ -29,6 +29,7 @@ export default function HomePage() {
       {!reports.length && <p className="empty-note">Loading community reports…</p>}
       <div className="section-bottom"><Link className="text-link" to="/reports">Explore all reports <ArrowUpRight size={16}/></Link><span className="quiet-meta">COMMUNITY-SUBMITTED · REVIEW STATUS SHOWN</span></div>
     </section>
+    {/* Temporarily hidden per request; keep this section available for a future landing-page redesign.
     <section className="landing-trust" aria-labelledby="trust-heading">
       <div className="trust-heading">
         <div><p className="eyebrow">What you can trust here</p><h2 id="trust-heading">Transparency without<br/><em>exposure.</em></h2></div>
@@ -40,6 +41,7 @@ export default function HomePage() {
         <article><span><BadgeCheck size={22}/></span><small>03 · REVIEWED CONTEXT</small><h3>Approval unlocks reviewed details</h3><p>Approved reports can show moderated summaries and relevant identifiers, always with a community-report disclaimer.</p></article>
       </div>
     </section>
+    */}
     <section className="story-section" id="how-it-works">
       <div className="story-side"><p className="eyebrow">A little doubt can be useful</p><h2>Pause the excitement.<br/><em>Check the details.</em></h2><p>A polished offer letter can still contain warning signs. Take a moment to examine the details and look for independent confirmation.</p><Link className="button button-dark" to="/reports">Start investigating <ArrowUpRight size={16}/></Link></div>
       <div className="steps">

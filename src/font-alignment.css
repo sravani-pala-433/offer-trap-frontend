@@ -246,6 +246,45 @@
 }
 
 @media (max-width: 720px) {
+  .search-box {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .search-box > input {
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .admin-search input {
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+
+  .submission-form label,
+  .submission-form .form-two {
+    min-width: 0;
+  }
+
+  .submission-form input:not([type='checkbox']),
+  .submission-form select,
+  .submission-form textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .submission-form input::placeholder {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .detail-page .detail-main h1 {
     font-size: clamp(25px, 6vw, 29px) !important;
   }

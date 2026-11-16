@@ -38,7 +38,7 @@ export default function LetterfallHero() {
       </motion.div>
       <motion.form id="offer-search" className="search-box hero-search" onSubmit={search} initial={reduced ? false : { opacity:0 }} animate={{ opacity:1 }} transition={{ delay:.5 }}>
         <Search size={19} aria-hidden="true"/><label className="sr-only" htmlFor="hero-query">Search company, recruiter email or phone number</label>
-        <input id="hero-query" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Company, recruiter email, phone number…" />
+        <input id="hero-query" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search company or recruiter…" />
         <button aria-label="Search reports" type="submit"><Search size={18}/></button>
       </motion.form>
       <p className="hero-note"><span className="note-dot"/> Search community reports. Verify independently.</p>

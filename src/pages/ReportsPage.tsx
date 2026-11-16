@@ -60,7 +60,7 @@ export default function ReportsPage() {
   return <main className="inner-page">
     <div className="inner-intro"><p className="eyebrow">The evidence archive</p><h1>Explore the <em>reports.</em></h1><p>Approved reports include reviewed details. Other submissions remain visible with their review status while recruiter identities, contact details, evidence, and raw descriptions stay protected.</p></div>
     {isSample && <p className="demo-notice">Illustrative frontend preview. This is not a real allegation and appears only while the reports API is unavailable.</p>}
-    <form className="search-box archive-search" onSubmit={submit}><Search size={21}/><label className="sr-only" htmlFor="archive-query">Search reports</label><input id="archive-query" value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search company, recruiter email, phone number, domain or reference…"/><button type="submit">Search</button></form>
+    <form className="search-box archive-search" onSubmit={submit}><Search size={21}/><label className="sr-only" htmlFor="archive-query">Search reports</label><input id="archive-query" value={query} onChange={event=>setQuery(event.target.value)} placeholder="Company, recruiter, or reference…"/><button type="submit">Search</button></form>
     <div className="results-bar"><span><SlidersHorizontal size={15}/> {loading?'Searching…':`${total} ${total===1?'report':'reports'} found`}</span><Link to="/submit">Submit a report ↗</Link></div>
     {error && <div className="error-panel">{error}<p>Check your API URL and endpoint mapping in <code>src/lib/api.ts</code>.</p></div>}
     {loading ? <p className="empty-note">Looking through the archive…</p> : reports.length ? <>
