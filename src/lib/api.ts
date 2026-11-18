@@ -106,7 +106,7 @@ type EvidenceUpload = {
 }
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
-const ADMIN_LOGIN_MOCK = import.meta.env.VITE_ADMIN_LOGIN_MOCK !== 'false'
+const ADMIN_LOGIN_MOCK = import.meta.env.VITE_ADMIN_LOGIN_MOCK === 'true'
 const SAMPLE_REPORT_ENABLED = import.meta.env.VITE_SHOW_SAMPLE_REPORT !== 'false'
 
 function sampleSearch(query: string, page: number, pageSize: number): SearchResponse {
