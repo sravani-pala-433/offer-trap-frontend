@@ -82,7 +82,7 @@ export type AdminEvidence = {
   chunkCount: number
 }
 
-export type AdminReport = Report & {
+export type AdminReport = Omit<Report, 'evidence'> & {
   reviewStatus: ReviewStatus
   reviewNote?: string
   reviewedAt?: string
