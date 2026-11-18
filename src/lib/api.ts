@@ -1,17 +1,20 @@
 export type ReportStatus =
   | 'Community Report'
-  | 'Submitted'
-  | 'Under Review'
-  | 'Needs Information'
-  | 'Approved'
-  | 'Corroborated Reports'
-  | 'Disputed'
-  | 'Verified'
+  | 'Published - unverified'
   | 'Rejected'
 
-export type ReviewStatus = 'submitted' | 'under_review' | 'needs_information' | 'approved' | 'rejected'
-export type ReviewDecision = 'needs_information' | 'approved' | 'rejected'
+export type ReviewStatus = 'submitted' | 'rejected'
+export type ReviewDecision = 'rejected'
 export type UploadStage = 'preparing' | 'uploading' | 'submitting'
+export type UploadProgress = { uploadedBytes: number; totalBytes: number }
+
+export type ReportEvidence = {
+  id: string
+  url: string
+  contentType: string
+  chunkSizeBytes: number
+  chunkCount: number
+}
 
 export type Report = {
   id: string
@@ -24,12 +27,15 @@ export type Report = {
   reviewStatus?: ReviewStatus
   isRedacted?: boolean
   identifier?: string
+  recruiterName?: string
   submittedBy?: string
   relatedCount?: number
   illustrative?: boolean
   paymentRequested?: boolean
   jobTitle?: string
   jobUrl?: string
+  description?: string
+  evidence?: ReportEvidence[]
 }
 
 export type SearchResponse = {
@@ -45,13 +51,14 @@ export type SubmitReportInput = {
   submitterEmail: string
   isAnonymous: boolean
   companyName: string
+  recruiterName: string
   recruiterContact: string
   jobTitle: string
   jobUrl: string
   category: string
   description: string
   paymentRequested: boolean
-  evidence: File[]
+  evidenceUploadIds: string[]
 }
 
 export type SubmissionStatus = {
@@ -71,6 +78,8 @@ export type AdminEvidence = {
   name: string
   contentType: string
   sizeBytes: number
+  chunkSizeBytes: number
+  chunkCount: number
 }
 
 export type AdminReport = Report & {
@@ -90,12 +99,10 @@ export type AdminLoginResponse = {
   expiresAt: number
 }
 
-type PresignedUpload = {
+type EvidenceUpload = {
   uploadId: string
-  uploadUrl: string
-  method: string
-  headers: Record<string,string>
-  expiresAt?: string
+  chunkSizeBytes: number
+  chunkCount: number
 }
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
@@ -146,6 +153,51 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>
 }
 
+function uploadErrorMessage(xhr: XMLHttpRequest): string {
+  const body = xhr.responseText ?? ''
+  if (!body) return `API request failed (${xhr.status})`
+  try {
+    const parsed = JSON.parse(body)
+    if (typeof parsed.detail === 'string') return parsed.detail
+    if (Array.isArray(parsed.detail)) {
+      return parsed.detail.map((item: { msg?: string }) => item.msg).filter(Boolean).join(' ')
+    }
+  } catch {
+    // The API returned plain text rather than JSON.
+  }
+  return body
+}
+
+function uploadChunk(
+  url: string,
+  chunk: Blob,
+  onProgress: (loadedBytes: number) => void,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('PUT', url)
+    xhr.setRequestHeader('Content-Type', 'application/octet-stream')
+    xhr.upload.addEventListener('progress', event => {
+      onProgress(Math.min(chunk.size, event.loaded))
+    })
+    xhr.addEventListener('load', () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        onProgress(chunk.size)
+        resolve()
+      } else {
+        reject(new Error(uploadErrorMessage(xhr)))
+      }
+    })
+    xhr.addEventListener('error', () => {
+      reject(new Error('Evidence upload failed because of a network or CORS error.'))
+    })
+    xhr.addEventListener('abort', () => {
+      reject(new Error('Evidence upload was interrupted. Please try again.'))
+    })
+    xhr.send(chunk)
+  })
+}
+
 function authHeaders(token: string, includeJson = false): HeadersInit {
   return {
     Authorization: `Bearer ${token}`,
@@ -156,7 +208,7 @@ function authHeaders(token: string, includeJson = false): HeadersInit {
 function normalizeReport(raw: any): Report {
   const category = raw.category ?? raw.incident_category ?? 'Other'
   const reviewStatus = raw.reviewStatus ?? raw.review_status
-  const isRedacted = Boolean(raw.isRedacted ?? raw.is_redacted ?? (reviewStatus && reviewStatus !== 'approved'))
+  const isRedacted = Boolean(raw.isRedacted ?? raw.is_redacted ?? reviewStatus === 'rejected')
   return {
     id: String(raw.id ?? raw.report_id),
     companyName: raw.companyName ?? raw.company_name ?? 'Unspecified organization',
@@ -167,13 +219,26 @@ function normalizeReport(raw: any): Report {
     status: raw.status ?? 'Community Report',
     reviewStatus,
     isRedacted,
-    identifier: isRedacted ? undefined : (raw.identifier ?? raw.recruiter_contact ?? raw.email_domain),
+    identifier: isRedacted ? undefined : (raw.identifier ?? raw.recruiter_contact),
+    recruiterName: isRedacted ? undefined : (raw.recruiterName ?? raw.recruiter_name),
     submittedBy: raw.submittedBy ?? raw.submitted_by,
     relatedCount: raw.relatedCount ?? raw.related_count ?? 0,
     illustrative: Boolean(raw.illustrative),
     paymentRequested: raw.paymentRequested ?? raw.payment_requested,
     jobTitle: raw.jobTitle ?? raw.job_title,
     jobUrl: raw.jobUrl ?? raw.job_url,
+    description: isRedacted ? undefined : (raw.description ?? undefined),
+    evidence: isRedacted || !Array.isArray(raw.evidence)
+      ? []
+      : raw.evidence
+        .filter((item: any) => typeof item.url === 'string' && String(item.contentType ?? item.content_type ?? '').startsWith('image/'))
+        .map((item: any) => ({
+          id: String(item.id),
+          url: item.url,
+          contentType: item.contentType ?? item.content_type,
+          chunkSizeBytes: Number(item.chunkSizeBytes ?? item.chunk_size_bytes),
+          chunkCount: Number(item.chunkCount ?? item.chunk_count),
+        })),
   }
 }
 
@@ -182,7 +247,7 @@ function normalizeSubmissionStatus(raw: any): SubmissionStatus {
     id: String(raw.id),
     companyName: raw.companyName ?? raw.company_name,
     submittedBy: raw.submittedBy ?? raw.submitted_by ?? 'Anonymous',
-    status: raw.status ?? 'Under Review',
+    status: raw.status ?? 'Published - unverified',
     reviewStatus: raw.reviewStatus ?? raw.review_status ?? 'submitted',
     reviewNote: raw.reviewNote ?? raw.review_note,
     submittedAt: raw.submittedAt ?? raw.submitted_at,
@@ -202,12 +267,15 @@ function normalizeAdminReport(raw: any): AdminReport {
     submitterEmail: raw.submitterEmail ?? raw.submitter_email,
     isAnonymous: Boolean(raw.isAnonymous ?? raw.is_anonymous),
     recruiterContact: raw.recruiterContact ?? raw.recruiter_contact,
+    recruiterName: raw.recruiterName ?? raw.recruiter_name,
     description: raw.description ?? raw.summary ?? '',
     evidence: (raw.evidence ?? []).map((item: any) => ({
       id: String(item.id),
       name: item.name ?? item.original_name,
       contentType: item.contentType ?? item.content_type ?? 'application/octet-stream',
       sizeBytes: item.sizeBytes ?? item.size_bytes ?? 0,
+      chunkSizeBytes: Number(item.chunkSizeBytes ?? item.chunk_size_bytes),
+      chunkCount: Number(item.chunkCount ?? item.chunk_count),
     })),
   }
 }
@@ -234,45 +302,54 @@ export const api = {
     return normalizeSubmissionStatus(await request<any>(`/reports/${encodeURIComponent(id)}/status`))
   },
 
-  async submitReport(input: SubmitReportInput, onStage?: (stage: UploadStage) => void): Promise<{ id?: string; message?: string; status?: ReportStatus }> {
-    let evidenceUploadIds: string[] = []
-
-    if (input.evidence.length) {
-      onStage?.('preparing')
-      const raw = await request<any>('/uploads/presign', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          files:input.evidence.map(file=>({
-            filename:file.name,
-            content_type:file.type || 'application/octet-stream',
-            size_bytes:file.size,
-          })),
-        }),
-      })
-      const uploads: PresignedUpload[] = (raw.uploads ?? []).map((upload: any) => ({
-        uploadId:String(upload.uploadId ?? upload.upload_id),
-        uploadUrl:upload.uploadUrl ?? upload.upload_url,
-        method:upload.method ?? 'PUT',
-        headers:upload.headers ?? {},
-        expiresAt:upload.expiresAt ?? upload.expires_at,
-      }))
-      if (uploads.length !== input.evidence.length || uploads.some(upload=>!upload.uploadId || !upload.uploadUrl)) {
-        throw new Error('The upload service returned an incomplete presigned-upload response.')
-      }
-
-      onStage?.('uploading')
-      await Promise.all(uploads.map(async (upload,index) => {
-        const response = await fetch(upload.uploadUrl,{
-          method:upload.method,
-          headers:upload.headers,
-          body:input.evidence[index],
-        })
-        if (!response.ok) throw new Error(`Unable to upload ${input.evidence[index].name}.`)
-      }))
-      evidenceUploadIds = uploads.map(upload=>upload.uploadId)
+  async uploadEvidenceFile(
+    file: File,
+    onProgress?: (progress: UploadProgress) => void,
+  ): Promise<string> {
+    onProgress?.({ uploadedBytes: 0, totalBytes: file.size })
+    const raw = await request<any>('/uploads', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        filename:file.name,
+        content_type:file.type || 'application/octet-stream',
+        size_bytes:file.size,
+      }),
+    })
+    const upload: EvidenceUpload = {
+      uploadId:String(raw.uploadId ?? raw.upload_id),
+      chunkSizeBytes:Number(raw.chunkSizeBytes ?? raw.chunk_size_bytes),
+      chunkCount:Number(raw.chunkCount ?? raw.chunk_count),
+    }
+    if (!upload.uploadId || !Number.isSafeInteger(upload.chunkSizeBytes) || upload.chunkSizeBytes < 1
+      || !Number.isSafeInteger(upload.chunkCount) || upload.chunkCount < 1) {
+      throw new Error('The upload service returned an incomplete upload manifest.')
     }
 
+    let completedFileBytes = 0
+    for (let chunkIndex = 0; chunkIndex < upload.chunkCount; chunkIndex += 1) {
+      const start = chunkIndex * upload.chunkSizeBytes
+      const chunk = file.slice(start, Math.min(start + upload.chunkSizeBytes, file.size))
+      await uploadChunk(
+        `${API_BASE}/uploads/${encodeURIComponent(upload.uploadId)}/chunks/${chunkIndex}`,
+        chunk,
+        chunkLoadedBytes => onProgress?.({
+          uploadedBytes: completedFileBytes + chunkLoadedBytes,
+          totalBytes: file.size,
+        }),
+      )
+      completedFileBytes += chunk.size
+    }
+
+    await request(`/uploads/${encodeURIComponent(upload.uploadId)}/complete`, { method:'POST' })
+    onProgress?.({ uploadedBytes: file.size, totalBytes: file.size })
+    return upload.uploadId
+  },
+
+  async submitReport(
+    input: SubmitReportInput,
+    onStage?: (stage: UploadStage) => void,
+  ): Promise<{ id?: string; message?: string; status?: ReportStatus }> {
     onStage?.('submitting')
     return request('/reports', {
       method:'POST',
@@ -282,13 +359,14 @@ export const api = {
         contributor_email:input.submitterEmail.trim(),
         anonymous_attribution:input.isAnonymous,
         company_name:input.companyName.trim(),
+        recruiter_name:input.recruiterName.trim() || null,
         recruiter_contact:input.recruiterContact.trim() || null,
         job_title:input.jobTitle.trim() || null,
         job_url:input.jobUrl.trim() || null,
         category:input.category,
         description:input.description.trim(),
         payment_requested:input.paymentRequested,
-        evidence_upload_ids:evidenceUploadIds,
+        evidence_upload_ids:input.evidenceUploadIds,
       }),
     })
   },
@@ -309,10 +387,11 @@ export const api = {
     return { accessToken: raw.access_token, expiresAt: raw.expires_at }
   },
 
-  async getAdminReports(token: string, status?: ReviewStatus, query = ''): Promise<AdminReport[]> {
+  async getAdminReports(token: string, status?: ReviewStatus, query = '', submitterEmail = ''): Promise<AdminReport[]> {
     const params = new URLSearchParams()
     if (status) params.set('status',status)
     if (query.trim()) params.set('query',query.trim())
+    if (submitterEmail.trim()) params.set('submitter_email',submitterEmail.trim())
     const encodedParams = params.toString()
     const suffix = encodedParams ? `?${encodedParams}` : ''
     const raw = await request<any>(`/admin/reports${suffix}`, { headers: authHeaders(token) })
@@ -329,13 +408,21 @@ export const api = {
     return normalizeAdminReport(raw)
   },
 
-  async downloadEvidence(token: string, evidence: AdminEvidence): Promise<void> {
-    if (!API_BASE) throw new Error('API base URL is not configured.')
-    const response = await fetch(`${API_BASE}/admin/evidence/${encodeURIComponent(evidence.id)}`, {
+  async deleteReport(token: string, id: string): Promise<void> {
+    await request<void>(`/admin/reports/${encodeURIComponent(id)}`, {
+      method: 'DELETE',
       headers: authHeaders(token),
     })
-    if (!response.ok) throw new Error(await errorMessage(response))
-    const blob = await response.blob()
+  },
+
+  async downloadEvidence(token: string, evidence: AdminEvidence): Promise<void> {
+    if (!API_BASE) throw new Error('API base URL is not configured.')
+    const blob = await fetchEvidenceChunks(
+      `${API_BASE}/admin/evidence/${encodeURIComponent(evidence.id)}`,
+      evidence.chunkCount,
+      evidence.contentType,
+      { headers: authHeaders(token) },
+    )
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
@@ -345,6 +432,32 @@ export const api = {
     link.remove()
     URL.revokeObjectURL(url)
   },
+
+  async getPublicEvidenceImage(evidence: ReportEvidence): Promise<Blob> {
+    return fetchEvidenceChunks(
+      evidence.url,
+      evidence.chunkCount,
+      evidence.contentType,
+    )
+  },
+}
+
+async function fetchEvidenceChunks(
+  baseUrl: string,
+  chunkCount: number,
+  contentType: string,
+  init: RequestInit = {},
+): Promise<Blob> {
+  if (!Number.isSafeInteger(chunkCount) || chunkCount < 1) {
+    throw new Error('The evidence response has an invalid chunk manifest.')
+  }
+  const chunks: BlobPart[] = []
+  for (let index = 0; index < chunkCount; index += 1) {
+    const response = await fetch(`${baseUrl.replace(/\/$/, '')}/chunks/${index}`, init)
+    if (!response.ok) throw new Error(await errorMessage(response))
+    chunks.push(await response.blob())
+  }
+  return new Blob(chunks, { type: contentType })
 }
 
 export const adminSession = {

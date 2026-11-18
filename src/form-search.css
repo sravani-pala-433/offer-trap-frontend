@@ -352,6 +352,49 @@
   font-size: 12px;
 }
 
+.submission-form .file-chip-info {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.submission-form .file-chip-info strong,
+.submission-form .file-chip-info small {
+  overflow-wrap: anywhere;
+}
+
+.submission-form .file-chip-info small {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.submission-form .file-chip-info .file-chip-error {
+  color: var(--red);
+  font-size: 11px;
+}
+
+.submission-form .file-selection-error {
+  margin: 8px 0 0;
+  color: var(--red);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.submission-form .file-chip .file-retry {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  border: 1px solid var(--red);
+  border-radius: 4px;
+  color: var(--red);
+}
+
+.submission-form .file-chip .file-retry:disabled {
+  cursor: wait;
+  opacity: .55;
+}
+
 .submission-form .submit-button {
   min-height: 54px;
   border-radius: 5px;

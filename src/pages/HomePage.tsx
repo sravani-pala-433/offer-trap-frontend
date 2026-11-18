@@ -23,8 +23,8 @@ export default function HomePage() {
     <LetterfallHero/>
     <section className="ticker" aria-label="Platform principles"><span>LOOK CLOSER</span><i/> <span>VERIFY THE SOURCE</span><i/> <span>SHARE WHAT YOU LEARN</span><i/> <span>LOOK CLOSER</span></section>
     <section className="section archive-section" id="reports">
-      <div className="section-heading"><div><p className="eyebrow">The community archive</p><h2>Has someone seen<br/><em>this before?</em></h2></div><p className="section-intro">See every submission’s review status. Recruiter details appear only after a report is approved.</p></div>
-      {showingSample && <p className="demo-notice">Illustrative preview shown while published API data is unavailable. This is not a real allegation.</p>}
+      <div className="section-heading"><div><p className="eyebrow">The community archive</p><h2>Has someone seen<br/><em>this before?</em></h2></div><p className="section-intro">Read reports as soon as they are submitted. Every report is unverified community information; an administrator can reject and remove a report.</p></div>
+      {showingSample && <p className="demo-notice">Illustrative preview shown. This is not a real allegation.</p>}
       <div className="report-list">{reports.map(r=><ReportCard key={r.id} report={r}/>)}</div>
       {!reports.length && <p className="empty-note">Loading community reports…</p>}
       <div className="section-bottom"><Link className="text-link" to="/reports">Explore all reports <ArrowUpRight size={16}/></Link><span className="quiet-meta">COMMUNITY-SUBMITTED · REVIEW STATUS SHOWN</span></div>
@@ -33,12 +33,12 @@ export default function HomePage() {
     <section className="landing-trust" aria-labelledby="trust-heading">
       <div className="trust-heading">
         <div><p className="eyebrow">What you can trust here</p><h2 id="trust-heading">Transparency without<br/><em>exposure.</em></h2></div>
-        <p>OfferTrap shows that a submission exists while protecting the people and evidence behind it until review is complete.</p>
+        <p>OfferTrap publishes community submissions immediately as unverified reports while keeping contributor email private.</p>
       </div>
       <div className="trust-grid">
-        <article><span><ListChecks size={22}/></span><small>01 · VISIBLE PROCESS</small><h3>Every report carries a status</h3><p>Submitted, under review, needs information, approved, or rejected—you can see where a report stands.</p></article>
-        <article><span><EyeOff size={22}/></span><small>02 · PRIVACY FIRST</small><h3>Sensitive details stay protected</h3><p>Contributor email, evidence, raw descriptions, and recruiter identifiers remain private until they are safe to publish.</p></article>
-        <article><span><BadgeCheck size={22}/></span><small>03 · REVIEWED CONTEXT</small><h3>Approval unlocks reviewed details</h3><p>Approved reports can show moderated summaries and relevant identifiers, always with a community-report disclaimer.</p></article>
+        <article><span><ListChecks size={22}/></span><small>01 · VISIBLE PROCESS</small><h3>Reports are published immediately</h3><p>Each report is labeled as unverified community information; an administrator can reject and remove it.</p></article>
+        <article><span><EyeOff size={22}/></span><small>02 · PRIVACY FIRST</small><h3>Contributor email stays private</h3><p>Public names and report details are shown as submitted, unless the contributor chooses an anonymous display name.</p></article>
+        <article><span><BadgeCheck size={22}/></span><small>03 · READ WITH CARE</small><h3>A report is not a verdict</h3><p>Every published report is unverified. Confirm important details independently through official company channels.</p></article>
       </div>
     </section>
     */}

@@ -58,13 +58,22 @@ export default function ReportsPage() {
   const activeSearch = params.get('q')?.trim() ?? ''
 
   return <main className="inner-page">
-    <div className="inner-intro"><p className="eyebrow">The evidence archive</p><h1>Explore the <em>reports.</em></h1><p>Approved reports include reviewed details. Other submissions remain visible with their review status while recruiter identities, contact details, evidence, and raw descriptions stay protected.</p></div>
+    <div className="inner-intro"><p className="eyebrow">The community archive</p><h1>Explore the <em>reports.</em></h1><p>Reports appear as soon as they are submitted and are marked unverified. Names are public unless the contributor chose anonymity; email addresses stay private. An administrator can reject a whole report.</p></div>
     {isSample && <p className="demo-notice">Illustrative frontend preview. This is not a real allegation and appears only while the reports API is unavailable.</p>}
-    <form className="search-box archive-search" onSubmit={submit}><Search size={21}/><label className="sr-only" htmlFor="archive-query">Search reports</label><input id="archive-query" value={query} onChange={event=>setQuery(event.target.value)} placeholder="Company, recruiter, or reference…"/><button type="submit">Search</button></form>
+    <form className="search-box archive-search" onSubmit={submit}><Search size={21}/><label className="sr-only" htmlFor="archive-query">Search reports</label><input id="archive-query" value={query} onChange={event=>{
+      const value = event.target.value
+      setQuery(value)
+      if (!value.trim() && params.has('q')) {
+        const next = new URLSearchParams(params)
+        next.delete('q')
+        next.delete('page')
+        setParams(next)
+      }
+    }} placeholder="Company, recruiter name, or reference…"/><button type="submit">Search</button></form>
     <div className="results-bar"><span><SlidersHorizontal size={15}/> {loading?'Searching…':`${total} ${total===1?'report':'reports'} found`}</span><Link to="/submit">Submit a report ↗</Link></div>
     {error && <div className="error-panel">{error}<p>Check your API URL and endpoint mapping in <code>src/lib/api.ts</code>.</p></div>}
-    {loading ? <p className="empty-note">Looking through the archive…</p> : reports.length ? <>
-      <div className="report-list">{reports.map(report=><ReportCard key={report.id} report={report}/>)}</div>
+    {loading ? <p className="empty-note">Exploring the Reports...</p> : reports.length ? <>
+      <div className="report-list">{reports.map(report=><ReportCard key={report.id} report={report} showStatusAndRecruiterContact={false}/>)}</div>
       {totalPages > 1 && <nav className="report-pagination" aria-label="Report pages">
         <button type="button" onClick={()=>changePage(page-1)} disabled={page<=1}><ChevronLeft size={16}/> Previous</button>
         <div className="pagination-pages">{visiblePages.map(pageNumber=><button type="button" key={pageNumber} className={page===pageNumber?'active':''} aria-current={page===pageNumber?'page':undefined} aria-label={`Go to page ${pageNumber}`} onClick={()=>changePage(pageNumber)}>{pageNumber}</button>)}</div>

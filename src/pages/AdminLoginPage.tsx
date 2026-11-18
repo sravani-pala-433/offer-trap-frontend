@@ -41,8 +41,8 @@ export default function AdminLoginPage() {
       <div className="admin-login-copy">
         <span className="admin-lock"><LockKeyhole size={26}/></span>
         <p className="eyebrow">Restricted access</p>
-        <h1>Evidence review<br/><em>desk.</em></h1>
-        <p>Sign in to review submissions, see private submitter contact details, and approve or reject evidence.</p>
+        <h1>Report moderation<br/><em>desk.</em></h1>
+        <p>Sign in to review published reports, see private submitter contact details, and reject a report that should be removed from the public archive.</p>
         <div className="admin-letterfall" aria-hidden="true">
           <span className="admin-letter admin-letter-one"><small>CASE 01</small><strong>O</strong><i>OFFER</i></span>
           <span className="admin-letter admin-letter-two"><small>REVIEW</small><strong>T</strong><i>TRACE</i></span>

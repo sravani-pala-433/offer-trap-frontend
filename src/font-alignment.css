@@ -177,8 +177,130 @@
   line-height: 1.5;
 }
 
+.detail-meta .detail-job-url {
+  min-width: 0;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+.detail-job-url a {
+  min-width: 0;
+  color: inherit;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.detail-job-url svg {
+  flex: 0 0 auto;
+  margin-top: 3px;
+}
+
+.upload-progress {
+  display: grid;
+  gap: 7px;
+  margin: -4px 0 4px;
+}
+
+.upload-progress-track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-raised);
+}
+
+.upload-progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--red);
+  transition: width 180ms ease;
+}
+
+.upload-progress p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+.report-description,
+.report-evidence {
+  margin-top: 30px;
+}
+
+.report-description > .eyebrow,
+.report-evidence > .eyebrow {
+  margin-bottom: 12px;
+}
+
+.report-description > p:last-child {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.report-evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.report-evidence-image {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+}
+
+.report-evidence-image img {
+  display: block;
+  width: 100%;
+  height: 250px;
+  object-fit: contain;
+  background: var(--surface);
+}
+
+.report-evidence-image > span {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+
+.report-evidence-image:hover > span {
+  color: var(--red);
+}
+
 .detail-page .detail-main h1 {
   font-size: clamp(30px, 3vw, 36px) !important;
+  margin-bottom: 6px;
+}
+
+.detail-category {
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.detail-report-subtitle {
+  margin: 0 0 20px;
+  color: var(--text-muted, #70675e);
+  font-family: var(--serif);
+  font-size: clamp(19px, 2.2vw, 24px);
+  font-weight: 500;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.detail-job-title-label {
+  margin: 12px 0 4px;
+  color: var(--text-muted, #70675e);
+  font-size: 10px;
+  letter-spacing: 1.2px;
 }
 
 .submission-form > label,
@@ -216,6 +338,11 @@
 .status-card h1 {
   font-size: clamp(38px, 5vw, 54px);
   line-height: 1.08;
+}
+
+.status-card .status-title {
+  font-size: clamp(28px, 3.3vw, 34px);
+  line-height: 1.15;
 }
 
 .status-explanation {
@@ -289,6 +416,10 @@
     font-size: clamp(25px, 6vw, 29px) !important;
   }
 
+  .report-evidence-grid {
+    grid-template-columns: 1fr;
+  }
+
   .empty-state {
     margin: 24px 0;
     padding: 34px 18px;
@@ -330,5 +461,186 @@
   .status-details > div {
     grid-template-columns: 100px minmax(0, 1fr);
     gap: 10px;
+  }
+}
+
+/* Give report details a wider canvas, with a compact status card and evidence rail. */
+.detail-layout {
+  width: 100%;
+  max-width: 1400px;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 350px);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+
+.detail-aside {
+  display: grid;
+  gap: 18px;
+  padding: 0;
+  background: transparent;
+}
+
+.review-status-card {
+  padding: 16px 18px;
+  border: 1px solid var(--border, #d9d2c8);
+  background: var(--surface-raised, #fffdf8);
+}
+
+.review-status-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.review-status-heading .eyebrow {
+  margin: 0;
+}
+
+.review-status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border: 1px solid var(--border, #d9d2c8);
+  color: var(--text, #292827);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.review-status-card > p {
+  margin: 11px 0 9px;
+  color: var(--text-muted, #70675e);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.review-status-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.review-status-action:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.detail-aside .report-evidence {
+  min-width: 0;
+  margin-top: 0;
+}
+
+.detail-aside .report-evidence > .eyebrow {
+  margin-bottom: 10px;
+}
+
+.detail-aside .report-evidence-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.detail-aside .report-evidence-image:only-child {
+  grid-column: 1 / -1;
+}
+
+.detail-aside .report-evidence-image img {
+  height: 150px;
+}
+
+.detail-aside .report-evidence-image:only-child img {
+  height: 260px;
+}
+
+.detail-aside .report-evidence-image > span {
+  padding: 8px 10px;
+  font-size: 11px;
+}
+
+@media (max-width: 900px) {
+  .detail-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+
+  .detail-aside {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .detail-aside.has-evidence {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detail-aside .report-evidence-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detail-aside .report-evidence-image img,
+  .detail-aside .report-evidence-image:only-child img {
+    height: clamp(220px, 42vw, 320px);
+  }
+}
+
+:root[data-theme='dark'] .detail-aside {
+  background: transparent;
+}
+
+@media (max-width: 600px) {
+  .detail-aside {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detail-aside .report-evidence-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detail-aside .report-evidence-image img,
+  .detail-aside .report-evidence-image:only-child img {
+    height: 220px;
+  }
+}
+
+/* Use the full content width when a report has no evidence-image rail. */
+.detail-layout.no-evidence {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.detail-layout.no-evidence .detail-main {
+  width: 100%;
+  max-width: none;
+}
+
+.detail-layout.no-evidence .detail-main > .review-status-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 22px;
+  margin: 20px 0 0;
+}
+
+.detail-layout.no-evidence .review-status-heading {
+  flex: 0 1 auto;
+  justify-content: flex-start;
+}
+
+.detail-layout.no-evidence .review-status-card > p {
+  flex: 1 1 220px;
+  margin: 0;
+}
+
+.results-bar a {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .results-bar a {
+    font-size: 13px;
   }
 }

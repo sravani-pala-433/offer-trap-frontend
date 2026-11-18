@@ -433,6 +433,13 @@
   background: rgba(177, 139, 74, .18);
 }
 
+.admin-rejection-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
 :root[data-theme='dark'] .review-badge-under_review,
 :root[data-theme='dark'] .status-orb-under_review {
   background: rgba(78, 135, 164, .2);
@@ -481,5 +488,105 @@
   .admin-letter,
   .admin-letter-seal {
     animation: none;
+  }
+}
+
+.admin-confirm-dialog {
+  width: min(520px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--border, #d9d2c8);
+  border-radius: 10px;
+  background: var(--surface-raised, var(--paper));
+  color: var(--text, var(--ink));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .3);
+}
+
+.admin-confirm-dialog::backdrop {
+  background: rgba(11, 12, 16, .7);
+  backdrop-filter: blur(3px);
+}
+
+.admin-confirm-content {
+  padding: clamp(24px, 5vw, 34px);
+}
+
+.admin-confirm-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 20px;
+  place-items: center;
+  border: 1px solid rgba(164, 61, 70, .35);
+  border-radius: 6px;
+  color: var(--red);
+  background: rgba(164, 61, 70, .08);
+}
+
+.admin-confirm-content > .eyebrow {
+  margin: 0 0 8px;
+}
+
+.admin-confirm-content h2 {
+  margin: 0;
+  font: 30px/1.15 var(--serif);
+}
+
+.admin-confirm-content > p:not(.eyebrow):not(.admin-confirm-error) {
+  margin: 14px 0 0;
+  color: var(--text-muted, var(--muted));
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.admin-confirm-content > p strong {
+  color: var(--text, var(--ink));
+  overflow-wrap: anywhere;
+}
+
+.admin-confirm-error {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(164, 61, 70, .28);
+  border-radius: 5px;
+  color: var(--red);
+  background: rgba(164, 61, 70, .08);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.admin-confirm-actions .button {
+  min-width: 132px;
+  min-height: 44px;
+  border-radius: 5px;
+}
+
+.admin-confirm-actions .admin-confirm-delete {
+  border-color: var(--red) !important;
+  background: var(--red);
+  color: #fff;
+}
+
+.admin-confirm-actions .admin-confirm-delete:hover:not(:disabled) {
+  background: #812a35;
+}
+
+@media (max-width: 480px) {
+  .admin-confirm-content h2 {
+    font-size: 26px;
+  }
+
+  .admin-confirm-actions {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }

@@ -2414,6 +2414,18 @@ body {
   color: var(--red);
 }
 
+.admin-delete {
+  border-color: var(--red) !important;
+  background: transparent;
+  color: var(--red);
+}
+
+.admin-delete:disabled,
+.admin-reject:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
 .admin-approve {
   border-color: #526f55 !important;
   background: #526f55;
